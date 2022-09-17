@@ -2,16 +2,16 @@
 Converts Cadence Virtuoso layer map (`.map`) file to KLayout layer properties (`.lyp`) file
 
 ## Usage
-To have KLayout display the layer names and data types used in a GDSII file a layer properties `.lyp` file needs to be supplied. The C shell script and KLayout macro in this repo can be used to generate a `.lyp` from following Cadence Virtuoso files:
+To have KLayout display layer names next to the layer numbers and data types that are present in a GDSII file a layer properties `.lyp` file needs to be supplied. The C shell script and KLayout macro in this repo can be used to generate a `.lyp` from following Cadence Virtuoso-specific files:
 - layer map file (`.map`) : Contains 4 columns of data - layer name, purpose, stream number and data type.
 - technology file (`.tf`) : Contains info similar to `.map` along with SKILL code and usually also interconnect/routing layer min/max limits.
 - display resource file (`.drf`) : Contains layer colors and stipple patterns that will be used to display those layers in the Virtuoso Layout viewer.
 
-After loading a GDSII file in KLayout there are 2 ways to have the layer numbers and data types show up in the layer info side panel.
+After loading a GDSII file in KLayout there are 2 ways to have the layer names show up in the layer info side panel.
 
 **A) Convert Virtuoso .map to .lyp and then load in KLayout:** 
 
-Use the script `virtuoso_lmap2klayout_lyp.csh` to generate a simplified layer properties file out of the Virtuoso layer map file. This is an XML format file that will preserve the names, stream numbers and stream data types but will ignore the colors and stipple patterns. *The default color palette of KLayout will be applied when this `.lyp` is loaded in KLayout.*
+Use the script `virtuoso_lmap2klayout_lyp.csh` to generate a simplified layer properties file out of the Virtuoso layer map file. This is an XML format file that will preserve the layer names, stream numbers and stream data types but will ignore the colors and stipple patterns since this info is not available in a `.map` file. *The default color palette and stipple patterns of KLayout will be applied when this `.lyp` is loaded in KLayout.*
 
 Run the script in a Linux terminal and pass the path to the Virtuoso layer map file as a command line argument:
 ```
@@ -24,7 +24,7 @@ set klayout_lyp="klayout.lyp"
 
 **B) Load Virtuoso .tf, .drf, .map directly in KLayout:** 
 
-The [tf_import macro](https://github.com/klayoutmatthias/tf_import) provided by KLayout developer can be used to load Cadence tech file, `.drf` and `.map`. To install this macro:
+The [tf_import macro](https://github.com/klayoutmatthias/tf_import) provided by KLayout's developer can be used to load Cadence `.tf` tech file, `.drf` and `.map`. To install this macro:
 1. Go to Tools menu option
 2. Open Manage Packages
 3. Search for the package under Install New Packages, select it and click on the checkmark above
@@ -64,4 +64,4 @@ To install the macro `.lym` file available in this repo:
 
     ![New menu option in KLayout Windows app](macro_images/MenuOption.png "New menu option in KLayout Windows app")
 
-Using this new `Import Cadence tf/drf/lmap (Ctrl+L)` will allow you to point to .tf, .map and .drf and have the layer side panel of KLayout populated with the correct layer names, stream numbers, data types, colors and stipple pattern. A `.lyp` can then be generated out of the contents of the layer side panel using File->Save Layer Properties. 
+Using this new `Import Cadence tf/drf/lmap (Ctrl+L)` will allow you to point to `.tf`, `.map` and `.drf` and have the layer side panel of KLayout populated with the correct layer names, stream numbers, data types, colors and stipple pattern. A `.lyp` can then be generated out of the contents of the layer side panel using File->Save Layer Properties. 
